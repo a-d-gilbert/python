@@ -3,10 +3,10 @@ import math
 class Polar:
 
     def __init__(self, p, angle_unit=0):
-        self.angle_unit = angle_unit
+        self._angle_unit = angle_unit
         self.r = p[0]
         self.theta = p[1]
-        self.point = (self.r, self.theta)
+        self.point = p
 
     def angle_unit():
         doc = "the angular unit type"
@@ -15,42 +15,58 @@ class Polar:
             return self._angle_unit
 
         def fset(self, new_angle_unit):
-            self._angle_unit = new_angle_unit
+            if(math.isnan(new_angle_unit)):
+                raise TypeError('value set was not a number.')
+            
+            elif((new_angle_unit != 1) or (new_angle_unit != 0)):
+                raise ValueError('value for angle_unit must be 1 or 0.')
+            
+            else:
+                self._angle_unit = new_angle_unit
 
         def fdel(self):
             del self._angle_unit
 
         return locals()
 
-        angle_unit = property(**angle_unit())
+    angle_unit = property(**angle_unit())
 
     def r():
         doc = "The r property."
 
         def fget(self):
-                    return self._r
+            return self._r
 
         def fset(self, new_r):
-                        self._r = new_r
+            if(math.isnan(new_r)):
+                    raise TypeError('Set value was not a number.')
+
+            else:
+                self._r = new_r
 
         def fdel(self):
             del self._r
 
         return locals()
 
-        r = property(**r())
+    r = property(**r())
 
     def theta():
         doc = "The theta property."
 
         def fget(self):
-                return self._theta
+            return self._theta
 
         def fset(self, new_theta):
+            if(math.isnan(new_theta)):
+                raise TypeError('Set value was not a number.')
+
+            else:
                 self._theta = new_theta
 
+
         def fdel(self):
-                del self._theta
+            del self._theta
 
         return locals()
 
@@ -63,7 +79,11 @@ class Polar:
             return self._point
 
         def fset(self, new_point):
-            self._point = new_point
+            if(math.isnan(new_point[0]) or math.isnan(new_point[1]) ):
+                raise TypeError('One of the tuple values was not a number.')
+                    
+            else:
+                self._point = new_point
 
         def fdel(self):
             del self._point
@@ -72,39 +92,44 @@ class Polar:
 
     point = property(**point())
 
-    @staticmethod
-    def to_polar(p, angle_unit=0):
+    @classmethod
+    def from_rectangular(cls, rect, angle_unit=0):
+        x = rect.x
+        y = rect.y
         if(angle_unit == 0):
-            if(p[0] < 0 and p[1] < 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.atan(float(p[1]/p[0])) + math.radians(180)
-                return Polar((r, theta))
-            elif(p[0] < 0 and p[1] > 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.atan(float(p[1]/p[0])) + math.radians(180)
-                return Polar((r, theta))
-            elif(p[0] > 0 and p[1] < 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.atan(float(p[1]/p[0])) + math.radians(360)
-                return Polar((r, theta))
+            if(x < 0 and y < 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.atan(float(y/x)) + math.radians(180)
+                
+            elif(x < 0 and y > 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.atan(float(y/x)) + math.radians(180)
+                
+            elif(x > 0 and y < 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.atan(float(y/x)) + math.radians(360)
+                
             else:
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.atan(float(p[1]/p[0]))
-                return Polar((r, theta))
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.atan(float(y/x))
+
+            return cls((r, theta))
+
         elif(angle_unit == 1):
-            if(p[0] < 0 and p[1] < 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.degrees(math.atan(float(p[1]/p[0]))) + 180
-                return Polar((r, theta))
-            elif(p[0] < 0 and p[1] > 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.degrees(math.atan(float(p[1]/p[0]))) + 180
-                return Polar((r, theta))
-            elif(p[0] > 0 and p[1] < 0):
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.degrees(math.atan(float(p[1]/p[0]))) + 360
-                return Polar((r, theta))
+            if(x < 0 and y < 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.degrees(math.atan(float(y/x))) + 180
+                
+            elif(x < 0 and y > 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.degrees(math.atan(float(y/x))) + 180
+                
+            elif(x > 0 and y < 0):
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.degrees(math.atan(float(y/x))) + 360
+                
             else:
-                r = math.sqrt((p[0] ** 2) + (p[1] ** 2))
-                theta = math.degrees(math.atan(float(p[1]/p[0])))
-                return Polar((r, theta))
+                r = math.sqrt((x ** 2) + (y ** 2))
+                theta = math.degrees(math.atan(float(y/x)))
+                
+            return cls((r, theta))

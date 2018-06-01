@@ -5,7 +5,7 @@ class Rectangular:
 	def __init__(self, p):
 		self.x = p[0]
 		self.y = p[1]
-		self.point = (self.x, self.y)
+		self.point = p
 
 	def x():
 		doc = "the x coordinate property"
@@ -13,7 +13,11 @@ class Rectangular:
 			return self._x
 
 		def fset(self, new_x):
-			self._x = new_x
+			if(math.isnan(new_x)):
+				raise TypeError('Set value was not a number.')
+
+			else:
+				self._x = new_x
 
 		def fdel(self):
 			del self._x
@@ -28,8 +32,12 @@ class Rectangular:
 			return self._y
 
 		def fset(self, new_y):
-			self._y = new_y
+			if(math.isnan(new_y)):
+				raise TypeError('Set value was not a number.')
 
+			else:
+				self._y = new_y
+						
 		def fdel(self):
 			del self._y
 
@@ -43,8 +51,12 @@ class Rectangular:
 			return self._point
 
 		def fset(self, new_point):
-			self._point = new_point
-
+			if(math.isnan(new_point[0]) or math.isnan(new_point[1]) ):
+				raise TypeError('One of the tuple values was not a number.')
+				
+			else:
+				self._point = new_point
+						
 		def fdel(self):
 			del self._point
 
@@ -52,16 +64,16 @@ class Rectangular:
 
 	point = property(**point())
 
-	@staticmethod
-	def to_rectangular(p, angle_unit=0):
-		r = p[0]
-		theta = p[1]
-		if(angle_unit == 0):
+	@classmethod
+	def from_polar(cls, polar):
+		r = polar.r
+		theta = polar.theta
+		if(polar.angle_unit == 0):
 			x = r * math.cos(theta)
 			y = r * math.sin(theta)
-			return Rectangular((x,y))
+			return cls((x,y))
 
-		elif(angle_unit == 1):
+		elif(polar.angle_unit == 1):
 			x = r * math.cos(math.radians(theta))
 			y = r * math.sin(math.radians(theta))
-			return Rectangular((x,y))
+			return cls((x,y))

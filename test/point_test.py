@@ -9,8 +9,8 @@ from coordinator.Rectangular import Rectangular
 
 c = (13, 22.6)
 polar_point = Polar(c, 1)
-rectangular_point = Rectangular.to_rectangular(polar_point.point, polar_point.angle_unit)
-polar_point = Polar.to_polar(rectangular_point.point)
+rectangular_point = Rectangular.from_polar(polar_point)
+polar_point = Polar.from_rectangular(rectangular_point, 1)
 
 print(polar_point.r)
 print(polar_point.theta)
