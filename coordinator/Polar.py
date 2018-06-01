@@ -42,7 +42,7 @@ class Polar:
                     raise TypeError('Set value was not a number.')
 
             else:
-                self._r = new_r
+                self._r = round(new_r, 2)
 
         def fdel(self):
             del self._r
@@ -62,7 +62,7 @@ class Polar:
                 raise TypeError('Set value was not a number.')
 
             else:
-                self._theta = new_theta
+                self._theta = round(new_theta, 2)
 
 
         def fdel(self):
@@ -83,7 +83,7 @@ class Polar:
                 raise TypeError('One of the tuple values was not a number.')
                     
             else:
-                self._point = new_point
+                self._point = (round(new_point[0], 2), round(new_point[1], 2))
 
         def fdel(self):
             del self._point

@@ -17,7 +17,7 @@ class Rectangular:
 				raise TypeError('Set value was not a number.')
 
 			else:
-				self._x = new_x
+				self._x = round(new_x, 2)
 
 		def fdel(self):
 			del self._x
@@ -36,7 +36,7 @@ class Rectangular:
 				raise TypeError('Set value was not a number.')
 
 			else:
-				self._y = new_y
+				self._y = round(new_y, 2)
 						
 		def fdel(self):
 			del self._y
@@ -55,7 +55,7 @@ class Rectangular:
 				raise TypeError('One of the tuple values was not a number.')
 				
 			else:
-				self._point = new_point
+				self._point = (round(new_point[0], 2), round(new_point[1], 2))
 						
 		def fdel(self):
 			del self._point
